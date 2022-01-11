@@ -1,0 +1,50 @@
+REAL MODE ONLY ALLOWS 16 BITS access at a time
+
+
+BIOS loads us into address 0x7c00
+
+ORG tells assembler where and how to offset our data correctly (where to originate from). Data is not defined by exact position, but rather by a memory location 
+and offset. Eg: x is memory location and data will be stored at an offset, say x:2, or x:4 (which are 2 and 4 bytes ahead of location x respectively)
+
+BITS 16 makes sure we tell the assembler it's 16 bit architecture and will only assemble instructions in 16-bit code 
+
+start is just a label. print and print_char are subroutines with a return 
+
+. is sort of a 'sublabel' that only applies to the label above it
+
+we move message location into si register
+
+lodsb loads the character the si register is pointing to. At the beginning it points to 'H;, then it loads it into al register. It then
+increments si register, so it points to 'e'.
+
+cmp and je are compare and jump equal to instructions
+
+We have eax register. It is made of ax register, which is further made up of ah and al (a high and a low)
+Read here: https://keleshev.com/eax-x86-register-meaning-and-history/
+
+int means interrupt, not integer. 0x10 is an interrupt code that calls the BIOS to perform a BIOS function. It outputs a character from al 
+to the screen, if ah has 0eh in it
+
+we use jmp $ to jump back to the same line, so we get an infinite loop. 
+This is because we don't wanna execute the next 2 instructions. They indicate memory allocation and boot signature and don't want to be run
+
+db is define byte. message is a label that points to this colelction of bytes, which is followed by the null terminator
+
+times tells assembler we need to fit at leat 510 bytes of data. If we use 510 bytes, nothing happens. If we don't, it pads the rest with 0's
+We do this because the final dw command is 2 bytes long and boot sectore needs to be in 511/512 bytes
+
+Now the BIOS needs a boot signature of 5500
+We type 0055 here because Intel machines are little-endian (which means the 00 and 55 are flipped in order)
+
+We compile it as a binary file cuz it needs to be just raw binary instructions with no headers. That means it should run on bare processor with BIOS only
+
+
+Commands: 
+
+compile: nasm -f bin ./boot.asm
+
+check instructions: ndisasm ./boot (where boot is name of generated file)
+
+run: qemu-system-x86_64 -hda ./boot
+
+target remote | qemu-system-x86_64 -hda ./bin/boot.bin -S -gdb stdio
