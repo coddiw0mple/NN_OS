@@ -1,6 +1,7 @@
 #include "kernel.h"
 #include <stdint.h>
 #include <stddef.h>
+#include "idt/idt.h"
 
 uint16_t* video_mem = 0;
 uint16_t terminal_y = 0;
@@ -64,10 +65,16 @@ void print(const char* str)
     }
 }
 
+//extern void problem(); // only for testing
+
 void kernel_main()
 {
     terminal_initialize();
     
     print("Hello, World!\nThis is my first OS :)");
 
+    // Initializing the global interrupt descriptor table
+    idr_init();
+
+    // problem(); // Should throw out a divide by 0 error interrupt, only for testing
 }
