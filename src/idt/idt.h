@@ -3,7 +3,7 @@
 
 #include <stdint.h>
 
-void idr_init();
+void idt_init();
 
 struct idt_desc
 {

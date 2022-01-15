@@ -21,6 +21,18 @@ _start:
     or al, 2
     out 0x92, al
     
+    ; Remapping the master PIC (Programmable Interrupt Controller)
+    mov al, 00010001b
+    out 0x20, al    ; Telling master PIC
+
+    mov al, 0x20    ; It's where master ISR（Interrupt Service Routing) should start 
+    out 0x21, al
+
+    mov al, 00000001b   ; Putting in x86 mode
+    out 0x21, al
+    ; Done remapping
+    sti
+    
     call kernel_main
     
     jmp $
