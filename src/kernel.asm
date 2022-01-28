@@ -40,5 +40,7 @@ _start:
 ;problem:
 ;    mov eax, 0
 ;    div eax
+;
+;   jmp $
 
 times 512-($ - $$) db 0
