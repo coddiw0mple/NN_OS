@@ -3,6 +3,7 @@
 #include <stddef.h>
 #include "idt/idt.h"
 #include "io/io.h"
+#include "memory/heap/kheap.h"
 
 uint16_t* video_mem = 0;
 uint16_t terminal_y = 0;
@@ -66,17 +67,21 @@ void print(const char* str)
     }
 }
 
-//extern void problem(); // only for testing
-
 void kernel_main()
 {
     terminal_initialize();
     
     print("Hello, World!\nThis is my first OS :)");
 
+    // Initializing our heap
+    kheap_init();
+
     // Initializing the global interrupt descriptor table
     idt_init();
 
-    //problem(); // Should throw out a divide by 0 error interrupt, only for testing
-    
+    void* ptr = kmalloc(50);
+    void* ptr2 = kmalloc(5000);
+    void* ptr3 = kmalloc(50);
+
+    if (ptr || ptr2 || ptr3) {;}
 }
