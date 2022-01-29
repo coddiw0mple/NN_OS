@@ -30,7 +30,6 @@ _start:
     mov al, 00000001b   ; Putting in x86 mode
     out 0x21, al
     ; Done remapping
-    sti
     
     call kernel_main
     
