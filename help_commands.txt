@@ -1,5 +1,17 @@
-target remote | qemu-system-i386 -hda ./bin/os.bin -S -gdb stdio
-
 add-symbol-file ./build/kernelfull.o 0x100000
 
-break kernel.c:89      (location of if (ptr || ptr2 || ptr3) {;})
+break kernel.c:96      (location of if (ptr || ptr2 || ptr3) {;})
+
+target remote | qemu-system-i386 -hda ./bin/os.bin -S -gdb stdio
+
+print buf
+
+next
+
+print buf
+
+print (unsigned char)(buf[0])
+print (unsigned char)(buf[1])
+print (unsigned char)(buf[2])
+
+bless ./bin/os.bin
