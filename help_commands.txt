@@ -1,13 +1,3 @@
 bless ./bin/os.bin
 
-add-symbol-file ./build/kernelfull.o 0x100000
-
-break kernel.c:94
-
-target remote | qemu-system-i386 -hda ./bin/os.bin -S -gdb stdio
-
-print *root_path
-
-print *root_path->first
-
-print *root_path->first->next
+search for 'ello' and check out 'Hello world this is team 8' in 2nd search result
