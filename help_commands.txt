@@ -1,3 +1,5 @@
+bless ./bin/os.bin
+
 add-symbol-file ./build/kernelfull.o 0x100000
 
 break kernel.c:94
