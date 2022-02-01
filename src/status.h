@@ -5,5 +5,6 @@
 #define EIO 1 // NN_OS_IO_ERROR
 #define EINVARG 2
 #define ENOMEM 3
+#define EBADPATH 4
 
 #endif

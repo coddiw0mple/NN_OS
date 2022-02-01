@@ -6,6 +6,8 @@
 #include "memory/heap/kheap.h"
 #include "memory/paging/paging.h"
 #include "disk/disk.h"
+#include "string/string.h"
+#include "fs/pparser.h"
 
 uint16_t* video_mem = 0;
 uint16_t terminal_y = 0;
@@ -14,17 +16,6 @@ uint16_t terminal_x = 0;
 uint16_t terminal_make_char(char c, char colour) // c is character, colour is ascii colour code
 {
     return (colour << 8) | c; // Forms 16-bit unsigned short.
-}
-
-size_t strlen(const char* str)
-{
-    size_t len = 0;
-    while(str[len]) // C puts null terminator at end of strings so this becomes false as soon as we hit the end
-    {
-        len++;
-    }
-
-    return len;
 }
 
 void terminal_put_char(int x, int y, char c, char colour)
@@ -80,6 +71,9 @@ void kernel_main()
     // Initializing our heap
     kheap_init();
 
+    // Search and initialize the disks
+    disk_search_and_init();
+
     // Initializing the global interrupt descriptor table
     idt_init();
 
@@ -92,9 +86,11 @@ void kernel_main()
     // Finally enabling paging
     enable_paging();
 
-    char buf[512];
-    disk_read_sector(0, 1, buf);
-
     // Enabling global system interrupts
     enable_interrupts();
+
+    struct path_root* root_path = pathparser_parse("0:/bin/shell.exe", NULL);
+
+    if(root_path) {}
+
 }
