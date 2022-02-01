@@ -1,6 +1,8 @@
 #ifndef DISK_H
 #define DISK_H
 
+#include "../fs/file.h"
+
 typedef unsigned int NN_OS_DISK_TYPE;
 
 
@@ -11,6 +13,9 @@ struct disk
 {
     NN_OS_DISK_TYPE type;
     int sector_size;
+    int id; // The id of the disk
+    struct filesystem* filesystem;
+    void* fs_private; // The private data of our filesystem
 };
 
 void disk_search_and_init();

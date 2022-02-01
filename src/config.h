@@ -12,4 +12,9 @@
 
 #define NN_OS_SECTOR_SIZE 512
 
+#define NN_OS_MAX_FILESYSTEMS 12
+#define NN_OS_MAX_FILE_DESCRIPTORS 512
+
+#define NN_OS_MAX_PATH 108
+
 #endif

@@ -9,6 +9,7 @@
 #include "string/string.h"
 #include "fs/pparser.h"
 #include "disk/streamer.h"
+#include "fs/file.h"
 
 uint16_t* video_mem = 0;
 uint16_t terminal_y = 0;
@@ -72,6 +73,9 @@ void kernel_main()
     // Initializing our heap
     kheap_init();
 
+    // Initialize filesystems
+    fs_init();
+
     // Search and initialize the disks
     disk_search_and_init();
 
@@ -91,10 +95,14 @@ void kernel_main()
     enable_interrupts();
 
 
-    struct disk_stream* stream = diskstreamer_new(0);
-    diskstreamer_seek(stream, 0x201);
-    unsigned char c = 0;
-    diskstreamer_read(stream, &c, 1);
+    int fd = fopen("0:/hello.txt", "r");
+    //int fd = fopen("0:/hello2.txt", "r");
+
+    if (fd) {
+        print("\nWe opened hello.txt\n");
+    } else {
+        print("\nWe didn't open hello.txt\n");
+    }
     while(1) {}
 
 }
