@@ -1,3 +1,3 @@
-bless ./bin/os.bin
+target remote | qemu-system-i386 -hda ./bin/os.bin -S -gdb stdio
 
-search for 'ello' and check out 'Hello world this is team 8' in 2nd search result
+change comments in kernel.c line 98
