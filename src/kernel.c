@@ -96,7 +96,6 @@ void kernel_main()
 
 
     int fd = fopen("0:/hello.txt", "r");
-    //int fd = fopen("0:/hello2.txt", "r");
 
     if (fd) {
         print("\nWe opened hello.txt\n");
