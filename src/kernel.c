@@ -100,6 +100,10 @@ void kernel_main()
 
     if (fd) {
         print("\nWe opened hello.txt\n");
+        char buf[32];
+        fread(buf, 31, 1, fd); // Reading only 31 bits since 32nd is supposed to be 0x00
+        buf[31] = 0x00;
+        print(buf);
     } else {
         print("\nWe didn't open hello.txt\n");
     }
