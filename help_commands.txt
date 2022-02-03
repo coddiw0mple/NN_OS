@@ -1,3 +1,7 @@
+add-symbol-file ./build/kernelfull.o 0x100000
+
+break *0x400000
+
 target remote | qemu-system-i386 -hda ./bin/os.bin -S -gdb stdio
 
 c
@@ -5,3 +9,17 @@ c
 ctrl-c
 
 layout asm
+
+stepi 
+
+layout prev
+
+next
+
+print *task_current()
+
+step
+
+next
+
+print command_func

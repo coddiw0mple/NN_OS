@@ -15,6 +15,7 @@
 #include "task/tss.h"
 #include "task/task.h"
 #include "task/process.h"
+#include "isr80h/isr80h.h"
 #include "config.h"
 #include "status.h"
 
@@ -135,11 +136,16 @@ void kernel_main()
     // Finally enabling paging
     enable_paging();
 
+    // Register the kernel commands
+    isr80h_register_commands();
+
     struct process* process = 0;
     int res = process_load("0:/blank.bin", &process);
     if (res != NN_OS_ALL_OK)
     {
         panic("Failed to load blank.bin\n");
+    } else {
+        print("\nLoaded process successfully");
     }
 
     task_run_first_ever_task();
