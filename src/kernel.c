@@ -13,7 +13,10 @@
 #include "fs/file.h"
 #include "gdt/gdt.h"
 #include "task/tss.h"
+#include "task/task.h"
+#include "task/process.h"
 #include "config.h"
+#include "status.h"
 
 uint16_t* video_mem = 0;
 uint16_t terminal_y = 0;
@@ -126,21 +129,15 @@ void kernel_main()
     // Finally enabling paging
     enable_paging();
 
-    // Enabling global system interrupts
-    enable_interrupts();
-
-
-    int fd = fopen("0:/hello.txt", "r");
-    struct file_stat s;
-
-    if (fd) {
-        fstat(fd, &s);
-
-        fclose(fd);
-        print("\nClosed file");
-    } else {
-        print("\nWe didn't open hello.txt\n");
+    struct process* process = 0;
+    int res = process_load("0:/blank.bin", &process);
+    if (res != NN_OS_ALL_OK)
+    {
+        panic("Failed to load blank.bin\n");
     }
+
+    task_run_first_ever_task();
+
     while(1) {}
 
 }
