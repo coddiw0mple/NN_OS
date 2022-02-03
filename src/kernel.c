@@ -98,8 +98,6 @@ struct gdt_structured gdt_structured[NN_OS_TOTAL_GDT_SEGMENTS] = {
 void kernel_main()
 {
     terminal_initialize();
-    
-    print("Hello, World!\nThis is my first OS :)");
 
     memset(gdt_real, 0x00, sizeof(gdt_real));
     gdt_structured_to_gdt(gdt_real, gdt_structured, NN_OS_TOTAL_GDT_SEGMENTS);
@@ -145,7 +143,7 @@ void kernel_main()
     {
         panic("Failed to load blank.bin\n");
     } else {
-        print("\nLoaded process successfully");
+        print("\nLoaded process successfully\n");
     }
 
     task_run_first_ever_task();
