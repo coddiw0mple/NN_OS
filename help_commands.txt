@@ -1,1 +1,13 @@
-qemu-system-i386 -hda ./bin/os.bin -S -gdb stdio
+add-symbol-file ./build/kernelfull.o 0x100000
+
+break kernel.c:102
+
+target remote | qemu-system-i386 -hda ./bin/os.bin -S -gdb stdio
+
+c
+
+print s
+
+next
+
+print s

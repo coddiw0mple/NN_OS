@@ -96,14 +96,10 @@ void kernel_main()
 
 
     int fd = fopen("0:/hello.txt", "r");
+    struct file_stat s;
 
     if (fd) {
-        print("\nWe opened hello.txt\n");
-        char buf[32];
-        fseek(fd, 4, SEEK_SET);
-        fread(buf, 27, 1, fd); // Reading only 31 bits since 32nd is supposed to be 0x00
-        buf[31] = 0x00;
-        print(buf);
+        fstat(fd, &s);
     } else {
         print("\nWe didn't open hello.txt\n");
     }
