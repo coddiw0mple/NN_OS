@@ -16,6 +16,7 @@
 #include "task/task.h"
 #include "task/process.h"
 #include "isr80h/isr80h.h"
+#include "keyboard/keyboard.h"
 #include "config.h"
 #include "status.h"
 
@@ -95,6 +96,11 @@ struct gdt_structured gdt_structured[NN_OS_TOTAL_GDT_SEGMENTS] = {
     {.base = (uint32_t)&tss, .limit=sizeof(tss), .type = 0xE9}      // TSS Segment
 };
 
+void pic_timer_callback(struct interrupt_frame* frame)
+{
+    print("Timer activated\n");
+}
+
 void kernel_main()
 {
     terminal_initialize();
@@ -136,6 +142,11 @@ void kernel_main()
 
     // Register the kernel commands
     isr80h_register_commands();
+
+    // Initialize all the system keyboards
+    keyboard_init();
+
+    idt_register_interrupt_callback(0x20, pic_timer_callback);
 
     struct process* process = 0;
     int res = process_load("0:/blank.bin", &process);
