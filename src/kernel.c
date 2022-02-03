@@ -100,6 +100,9 @@ void kernel_main()
 
     if (fd) {
         fstat(fd, &s);
+
+        fclose(fd);
+        print("\nClosed file");
     } else {
         print("\nWe didn't open hello.txt\n");
     }
