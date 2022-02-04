@@ -8,6 +8,7 @@ global nn_os_malloc:function
 global nn_os_free:function
 global nn_os_putchar:function
 global nn_os_process_load_start:function
+global nn_os_process_get_arguments:function 
 
 ; void print(const char* filename)
 print:
@@ -68,6 +69,17 @@ nn_os_process_load_start:
     mov ebp, esp
     mov eax, 6 ; Command 6 process load start ( stars a process )
     push dword[ebp+8] ; Variable "filename"
+    int 0x80
+    add esp, 4
+    pop ebp
+    ret 
+
+; void nn_os_process_get_arguments(struct process_arguments* arguments)
+nn_os_process_get_arguments:
+    push ebp
+    mov ebp, esp
+    mov eax, 8 ; Command 8 Gets the process arguments
+    push dword[ebp+8] ; Variable arguments
     int 0x80
     add esp, 4
     pop ebp

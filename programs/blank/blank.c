@@ -5,15 +5,10 @@
 
 int main(int argc, char** argv)
 {
-    char* ptr = malloc(20);
-    strcpy(ptr, "hello world");
+    struct process_arguments arguments;
+    nn_os_process_get_arguments(&arguments);
 
-    print(ptr);
-
-    free(ptr);
-
-    ptr[0] = 'B';
-    print("abc\n");
+    printf("%i %s\n", arguments.argc, arguments.argv[0]);
 
     while(1) 
     {
