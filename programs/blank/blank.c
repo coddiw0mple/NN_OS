@@ -5,31 +5,15 @@
 
 int main(int argc, char** argv)
 {
-    printf("My age is %i\n", 19);
+    char* ptr = malloc(20);
+    strcpy(ptr, "hello world");
 
-    print("Hello how are you!\n");
+    print(ptr);
 
-    print(itoa(8763));
-
-    putchar('Z');
-
-    void* ptr = malloc(512);
-    
     free(ptr);
 
-    char buf[1024];
-    nn_os_terminal_readline(buf, sizeof(buf), true);
-
-    print(buf);
-
-    char words[] = "hello how are you";
-
-    const char* token = strtok(words, " ");
-    while(token)
-    {
-        printf("%s\n", token);
-        token = strtok(NULL, " ");
-    }
+    ptr[0] = 'B';
+    print("abc\n");
 
     while(1) 
     {
