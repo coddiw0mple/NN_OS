@@ -26,5 +26,7 @@ void nn_os_terminal_readline(char* out, int max, bool output_while_typing);
 void nn_os_process_load_start(const char* filename);
 struct command_argument* nn_os_parse_command(const char* command, int max);
 void nn_os_process_get_arguments(struct process_arguments* arguments);
+int nn_os_system(struct command_argument* arguments);
+int nn_os_system_run(const char* command);
 
 #endif 
