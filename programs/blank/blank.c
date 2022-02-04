@@ -1,6 +1,7 @@
 #include "../stdlib/src/nn_os.h"
 #include "../stdlib/src/stdlib.h"
 #include "../stdlib/src/stdio.h"
+#include "../stdlib/src/string.h"
 
 int main(int argc, char** argv)
 {
@@ -20,6 +21,15 @@ int main(int argc, char** argv)
     nn_os_terminal_readline(buf, sizeof(buf), true);
 
     print(buf);
+
+    char words[] = "hello how are you";
+
+    const char* token = strtok(words, " ");
+    while(token)
+    {
+        printf("%s\n", token);
+        token = strtok(NULL, " ");
+    }
 
     while(1) 
     {
