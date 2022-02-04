@@ -10,6 +10,7 @@ global nn_os_putchar:function
 global nn_os_process_load_start:function
 global nn_os_process_get_arguments:function 
 global nn_os_system:function
+global nn_os_exit:function
 
 ; void print(const char* filename)
 print:
@@ -94,5 +95,14 @@ nn_os_process_get_arguments:
     push dword[ebp+8] ; Variable arguments
     int 0x80
     add esp, 4
+    pop ebp
+    ret 
+
+; void nn_os_exit()
+nn_os_exit:
+    push ebp
+    mov ebp, esp
+    mov eax, 9 ; Command 9 process exit
+    int 0x80
     pop ebp
     ret 
