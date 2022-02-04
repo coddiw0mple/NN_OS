@@ -1,9 +1,14 @@
 #include "../stdlib/src/nn_os.h"
 #include "../stdlib/src/stdlib.h"
+#include "../stdlib/src/stdio.h"
 
 int main(int argc, char** argv)
 {
     print("Hello how are you!\n");
+
+    print(itoa(8763));
+
+    putchar('Z');
 
     void* ptr = malloc(512);
     
