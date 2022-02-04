@@ -7,6 +7,7 @@ global nn_os_getkey:function
 global nn_os_malloc:function
 global nn_os_free:function
 global nn_os_putchar:function
+global nn_os_process_load_start:function
 
 ; void print(const char* filename)
 print:
@@ -56,6 +57,17 @@ nn_os_free:
     mov ebp, esp
     mov eax, 5 ; Command 5 free (Frees the allocated memory for this process)
     push dword[ebp+8] ; Variable "ptr"
+    int 0x80
+    add esp, 4
+    pop ebp
+    ret 
+
+; void nn_os_process_load_start(const char* filename)
+nn_os_process_load_start:
+    push ebp
+    mov ebp, esp
+    mov eax, 6 ; Command 6 process load start ( stars a process )
+    push dword[ebp+8] ; Variable "filename"
     int 0x80
     add esp, 4
     pop ebp
