@@ -3,7 +3,7 @@
 section .asm
 
 global print:function
-global getkey:function
+global nn_os_getkey:function
 global nn_os_malloc:function
 global nn_os_free:function
 global nn_os_putchar:function
@@ -19,8 +19,8 @@ print:
     pop ebp
     ret 
 
-; int getkey()
-getkey:
+; int nn_os_getkey()
+nn_os_getkey:
     push ebp
     mov ebp, esp
     mov eax, 2 ; Command getkey

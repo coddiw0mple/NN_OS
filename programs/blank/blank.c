@@ -4,8 +4,8 @@
 
 int main(int argc, char** argv)
 {
-    printf("My age is %i\n", 98);
-    
+    printf("My age is %i\n", 19);
+
     print("Hello how are you!\n");
 
     print(itoa(8763));
@@ -16,12 +16,14 @@ int main(int argc, char** argv)
     
     free(ptr);
 
+    char buf[1024];
+    nn_os_terminal_readline(buf, sizeof(buf), true);
+
+    print(buf);
+
     while(1) 
     {
-        if (getkey() != 0)
-        {
-            print("key was pressed\n");
-        }
+
     }
     return 0;
 } 
