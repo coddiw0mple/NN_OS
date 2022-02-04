@@ -1,8 +1,11 @@
 [BITS 32]
 
+section .asm
+
 global print:function
 global getkey:function
 global nn_os_malloc:function
+global nn_os_free:function
 
 ; void print(const char* filename)
 print:
@@ -34,3 +37,14 @@ nn_os_malloc:
     add esp, 4
     pop ebp
     ret
+
+; void nn_os_free(void* ptr)
+nn_os_free:
+    push ebp
+    mov ebp, esp
+    mov eax, 5 ; Command 5 free (Frees the allocated memory for this process)
+    push dword[ebp+8] ; Variable "ptr"
+    int 0x80
+    add esp, 4
+    pop ebp
+    ret 
