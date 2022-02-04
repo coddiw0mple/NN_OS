@@ -21,8 +21,8 @@
 #include "status.h"
 
 uint16_t* video_mem = 0;
-uint16_t terminal_y = 0;
-uint16_t terminal_x = 0;
+uint16_t terminal_row = 0;
+uint16_t terminal_col = 0;
 
 uint16_t terminal_make_char(char c, char colour) // c is character, colour is ascii colour code
 {
@@ -34,20 +34,44 @@ void terminal_put_char(int x, int y, char c, char colour)
     video_mem[(y * VGA_WIDTH) + x] = terminal_make_char(c, colour);
 }
 
-void terminal_write_char(char c, char colour)
+void terminal_backspace()
 {
-    if (c == '\n') {
-        terminal_x = 0;
-        terminal_y += 1;
+    if (terminal_row == 0 && terminal_col == 0)
+    {
         return;
     }
 
-    terminal_put_char(terminal_x, terminal_y, c, colour);
-    terminal_x += 1;
+    if (terminal_col == 0)
+    {
+        terminal_row -= 1;
+        terminal_col = VGA_WIDTH;
+    }
 
-    if (terminal_x >= VGA_WIDTH) {
-        terminal_x = 0;
-        terminal_y += 1;
+    terminal_col -=1;
+    terminal_writechar(' ', 15);
+    terminal_col -=1;
+}
+
+void terminal_writechar(char c, char colour)
+{
+    if (c == '\n') {
+        terminal_col = 0;
+        terminal_row += 1;
+        return;
+    }
+
+    if (c == 0x08)
+    {
+        terminal_backspace();
+        return;
+    }
+
+    terminal_put_char(terminal_col, terminal_row, c, colour);
+    terminal_col += 1;
+
+    if (terminal_col >= VGA_WIDTH) {
+        terminal_col = 0;
+        terminal_row += 1;
     }
 }
 
@@ -67,7 +91,7 @@ void print(const char* str)
     size_t len = strlen(str);
 
     for (int i = 0; i < len; i++) {
-        terminal_write_char(str[i], 2);
+        terminal_writechar(str[i], 2);
     }
 }
 
@@ -95,11 +119,6 @@ struct gdt_structured gdt_structured[NN_OS_TOTAL_GDT_SEGMENTS] = {
     {.base = 0x00, .limit = 0xffffffff, .type = 0xf2},             // User data segment
     {.base = (uint32_t)&tss, .limit=sizeof(tss), .type = 0xE9}      // TSS Segment
 };
-
-void pic_timer_callback(struct interrupt_frame* frame)
-{
-    print("Timer activated\n");
-}
 
 void kernel_main()
 {
@@ -146,10 +165,8 @@ void kernel_main()
     // Initialize all the system keyboards
     keyboard_init();
 
-    idt_register_interrupt_callback(0x20, pic_timer_callback);
-
     struct process* process = 0;
-    int res = process_load("0:/blank.bin", &process);
+    int res = process_load_switch("0:/blank.bin", &process);
     if (res != NN_OS_ALL_OK)
     {
         panic("Failed to load blank.bin\n");
